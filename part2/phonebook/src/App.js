@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect} from 'react'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
+import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -34,6 +35,19 @@ const App = () => {
       setNewNumber('')
     }
   }
+
+  const [notes, setNotes] = useState([])
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setNotes(response.data)
+      })
+  }, [])
+  console.log('render', notes.length, 'persons')
+
   return (
     <div>
       <h2>Phonebook</h2>
