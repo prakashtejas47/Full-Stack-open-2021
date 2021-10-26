@@ -1,19 +1,9 @@
 {
   "persons": [
     {
-      "name": "louis",
-      "number": "88471239",
-      "id": 16
-    },
-    {
-      "name": "raghavan",
-      "number": "5657473849",
-      "id": 18
-    },
-    {
-      "name": "nancy",
-      "number": "7384892734",
-      "id": 20
+      "name": "Rishi",
+      "number": "61",
+      "id": 8
     }
   ]
 }
