@@ -77,6 +77,14 @@ const App = () => {
           setMessage(null)
         }, 2000)
       })
+      .catch(error =>{
+        const el = document.createElement( 'html' )
+        el.innerHTML = error.response.data
+        setMessage(el.getElementsByTagName('pre')[0].innerText)
+        setTimeout(() => {
+          setMessage(null)
+        }, 2000)
+      })
     }
   }
 

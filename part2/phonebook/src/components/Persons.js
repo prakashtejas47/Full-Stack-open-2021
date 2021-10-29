@@ -2,7 +2,8 @@ import React from 'react'
 import axios from 'axios'
 
 const Persons = (props) =>{
-    const baseUrl = 'http://localhost:3001/persons/'
+    const baseUrl = 'api/persons/'
+    //const baseUrl = 'http://localhost:3001/api/persons/'
     const handleDelete = text =>event=>{
         if (window.confirm("Delete " + text["name"] + "?")) {
             axios
