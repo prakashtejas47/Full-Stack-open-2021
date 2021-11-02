@@ -1,0 +1,8 @@
+url = "url with password"
+mongoose.connect(url)
+blogSchema = {
+    likes:String,
+    url:String,
+    author:String
+}
+mongoose.
