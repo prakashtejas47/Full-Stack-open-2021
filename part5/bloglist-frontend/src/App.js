@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login' 
+import LoginForm from './components/LoginForm'
+import CreateForm from './components/CreateForm'
 import './index.css'
 
 
@@ -14,6 +16,7 @@ const App = () => {
   const [title,setTitle] = useState('')
   const [author,setAuthor] = useState('')
   const [url,setUrl] = useState('')
+  const [createVisible, setCreateVisible] = useState(false)
 
 
   useEffect(() => {
@@ -27,7 +30,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
-      blogService.setToken(user.token)
+      blogService.setToken(user.token) 
     }
   }, [])
   
@@ -96,39 +99,45 @@ const App = () => {
     setAuthor('')
     setUrl('')
   }
-  const loginForm = ()=>(
-    <div>
-    <form onSubmit={handleLogin}>
-      <Notification message={errorMessage} />
-          <h2>Log in to application</h2>
-          <div>
-            username
-              <input
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            password
-              <input
-              type="password"
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button type="submit">login</button>
-        </form>
-    </div>
-  )
+  
+  const createForm = () => {
+    const hideWhenVisible = { display: createVisible ? 'none' : '' }
+    const showWhenVisible = { display: createVisible ? '' : 'none' }
+
+    return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setCreateVisible(true)}>create</button>
+        </div>
+        <div style={showWhenVisible}>
+        <CreateForm
+         handleCreate={handleCreate}
+         title={title}
+         setTitle={setTitle}
+         author={author}
+         setAuthor={setAuthor}
+         url={url}
+         setUrl={setUrl}
+        />
+          <button onClick={() => setCreateVisible(false)}>cancel</button>
+        </div>
+      </div>
+    )
+  }
 
 
   if (user === null) {
     return (
       <div>
-        {loginForm()}
+        <LoginForm
+          handleLogin={handleLogin}
+          Notification={Notification}
+          errorMessage={errorMessage}
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+        />
       </div>
     )
   }
@@ -142,35 +151,9 @@ const App = () => {
         <button type="submit">logout</button>
       </form>
       <h2>Create New</h2>
-      <form onSubmit={handleCreate}>
-        <div>
-            Title: 
-            <input
-              type="text"
-              value={title}
-              onChange={({ target }) => setTitle(target.value)}
-            />
-        </div>
-        <div>
-            Author:
-            <input
-              type="text"
-              value={author}
-              onChange={({ target }) => setAuthor(target.value)}
-            />
-        </div>
-        <div>
-            Url:
-            <input
-              type="text"
-              value={url}
-              onChange={({ target }) => setUrl(target.value)}
-            />
-        </div>
-        <button type="submit">create</button>
-      </form>
+      {createForm()}
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} put={blogService.put} getAll={blogService.getAll} remove={blogService.remove}/>
       )}
 
     </div>
